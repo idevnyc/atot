@@ -3,7 +3,7 @@ name: Audio to Text
 on:
   push:
     paths:
-      - audio.m4a  # 当音频文件 audio.m4a 被提交时触发工作流
+      - .github/workflows/atot.yml  # 当音频文件 audio.m4a 被提交时触发工作流
 
 jobs:
   transcribe:
@@ -28,8 +28,8 @@ jobs:
         # 安装 ffmpeg
         sudo apt-get update
         sudo apt-get install -y ffmpeg
-        # 使用 whisper 转换音频为文字
-        whisper audio.m4a --language Chinese --output_dir output
+        # 使用 whisper 转换音频为英文文字
+        whisper audio.m4a --language English --output_dir output
 
     - name: Upload transcription
       uses: actions/upload-artifact@v3
