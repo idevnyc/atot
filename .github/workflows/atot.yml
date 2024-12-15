@@ -1,0 +1,38 @@
+name: Audio to Text
+
+on:
+  push:
+    paths:
+      - audio.m4a  # 当音频文件 audio.m4a 被提交时触发工作流
+
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install openai-whisper ffmpeg-python
+
+    - name: Convert audio to text
+      run: |
+        # 安装 ffmpeg
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+        # 使用 whisper 转换音频为文字
+        whisper audio.m4a --language Chinese --output_dir output
+
+    - name: Upload transcription
+      uses: actions/upload-artifact@v3
+      with:
+        name: transcription
+        path: output/
